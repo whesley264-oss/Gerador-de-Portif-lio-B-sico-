@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Portfólio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #6f42c1;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #eaeaea;
+            --success-color: #28a745;
+        }
+
+        .dark-theme {
+            --primary-color: #6f8af9;
+            --secondary-color: #8c68c9;
+            --text-color: #f1f1f1;
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --border-color: #444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .form-section {
+            width: 40%;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+        }
+
+        .preview-section {
+            width: 60%;
+            padding: 20px;
+            background-color: var(--bg-color);
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .preview-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-family: inherit;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .add-btn {
+            background-color: var(--secondary-color);
+            margin-top: 10px;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            margin-left: 10px;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .theme-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .theme-option.active {
+            border-color: var(--text-color);
+        }
+
+        .project-item, .skill-item, .certificate-item {
+            background-color: var(--bg-color);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .portfolio-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            border: 4px solid var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .social-links a {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .project-card {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+        }
+
+        .project-img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .skill-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .download-btn {
+            background-color: var(--success-color);
+            display: block;
+            margin: 30px auto;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            .form-section, .preview-section {
+                width: 100%;
+            }
+            .preview-section {
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="form-section">
+            <h1>Gerador de Portfólio</h1>
+            
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="personal">Pessoal</button>
+                <button class="tab-btn" data-tab="projects">Projetos</button>
+                <button class="tab-btn" data-tab="skills">Habilidades</button>
+                <button class="tab-btn" data-tab="customize">Personalizar</button>
+            </div>
+            
+            <form id="portfolio-form">
+                <div class="tab-content active" id="personal-tab">
+                    <div class="form-group">
+                        <label for="name">Nome Completo</label>
+                        <input type="text" id="name" placeholder="Seu nome completo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="title">Título Profissional</label>
+                        <input type="text" id="title" placeholder="Ex: Desenvolvedor Front-end">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-pic">Foto de Perfil (URL)</label>
+                        <input type="text" id="profile-pic" placeholder="Cole a URL da sua imagem">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bio">Biografia</label>
+                        <textarea id="bio" rows="4" placeholder="Fale um pouco sobre você"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Contatos</label>
+                        <input type="email" id="email" placeholder="E-mail">
+                        <input type="url" id="github" placeholder="URL do GitHub" class="mt-2">
+                        <input type="url" id="linkedin" placeholder="URL do LinkedIn" class="mt-2">
+                        <input type="url" id="portfolio" placeholder="URL do seu site" class="mt-2">
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="projects-tab">
+                    <div id="projects-container">
+                        <!-- Projetos serão adicionados aqui -->
+                    </div>
+                    <button type="button" id="add-project" class="add-btn">Adicionar Projeto</button>
+                </div>
+                
+                <div class="tab-content" id="skills-tab">
+                    <div class="form-group">
+                        <label for="skills">Habilidades (separadas por vírgula)</label>
+                        <input type="text" id="skills" placeholder="Ex: HTML, CSS, JavaScript, React">
+                    </div>
+                    
+                    <h3>Certificados</h3>
+                    <div id="certificates-container">
+                        <!-- Certificados serão adicionados aqui -->
+                    </div>
+                    <button type="button" id="add-certificate" class="add-btn">Adicionar Certificado</button>
+                </div>
+                
+                <div class="tab-content" id="customize-tab">
+                    <div class="form-group">
+                        <label>Tema</label>
+                        <div class="theme-selector">
+                            <div class="theme-option active" style="background-color: #4a6cf7;" data-theme="light"></div>
+                            <div class="theme-option" style="background-color: #1a1a1a;" data-theme="dark"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="primary-color">Cor Primária</label>
+                        <input type="color" id="primary-color" value="#4a6cf7">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="secondary-color">Cor Secundária</label>
+                        <input type="color" id="secondary-color" value="#6f42c1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="font-family">Fonte</label>
+                        <select id="font-family">
+                            <option value="Roboto">Roboto</option>
+                            <option value="Poppins">Poppins</option>
+                            <option value="Open Sans">Open Sans</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+            
+            <button id="download-btn" class="download-btn">Baixar Portfólio</button>
+        </section>
+        
+        <section class="preview-section">
+            <div class="preview-container">
+                <div id="portfolio-preview">
+                    <!-- Preview do portfólio será gerado aqui -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos do DOM
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const portfolioForm = document.getElementById('portfolio-form');
+            const portfolioPreview = document.getElementById('portfolio-preview');
+            const projectsContainer = document.getElementById('projects-container');
+            const certificatesContainer = document.getElementById('certificates-container');
+            const addProjectBtn = document.getElementById('add-project');
+            const addCertificateBtn = document.getElementById('add-certificate');
+            const downloadBtn = document.getElementById('download-btn');
+            const themeOptions = document.querySelectorAll('.theme-option');
+            const primaryColorInput = document.getElementById('primary-color');
+            const secondaryColorInput = document.getElementById('secondary-color');
+            const fontFamilySelect = document.getElementById('font-family');
+            
+            // Dados do portfólio
+            let portfolioData = {
+                personal: {
+                    name: '',
+                    title: '',
+                    profilePic: '',
+                    bio: '',
+                    email: '',
+                    github: '',
+                    linkedin: '',
+                    portfolio: ''
+                },
+                projects: [],
+                skills: [],
+                certificates: [],
+                customization: {
+                    theme: 'light',
+                    primaryColor: '#4a6cf7',
+                    secondaryColor: '#6f42c1',
+                    fontFamily: 'Roboto'
+                }
+            };
+            
+            // Inicializar com um projeto
+            addProject();
+            
+            // Navegação por abas
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tab = btn.dataset.tab;
+                    
+                    // Ativar aba clicada
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Mostrar conteúdo correspondente
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${tab}-tab`).classList.add('active');
+                });
+            });
+            
+            // Adicionar projeto
+            addProjectBtn.addEventListener('click', addProject);
+            
+            function addProject() {
+                const projectId = Date.now();
+                const projectHTML = `
+                    <div class="project-item" data-id="${projectId}">
+                        <h3>Novo Projeto</h3>
+                        <div class="form-group">
+                            <label for="project-name-${projectId}">Nome do Projeto</label>
+                            <input type="text" id="project-name-${projectId}" placeholder="Nome do projeto">
+                        </div>
+                        <div class="form-group">
+                            <label for="project-desc-${projectId}">Descrição</label>
+                            <textarea id="project-desc-${projectId}" placeholder="Descreva seu projeto" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="project-tech-${projectId}">Tecnologias (separadas por vírgula)</label>
+                            <input type="text" id="project-tech-${projectId}" placeholder="Ex: HTML, CSS, JavaScript">
+                        </div>
+                        <div class="form-group">
+                            <label for="project-code-${projectId}">Link do Código (GitHub)</label>
+                            <input type="url" id="project-code-${projectId}" placeholder="https://github.com/usuario/projeto">
+                        </div>
+                        <div class="form-group">
+                            <label for="project-demo-${projectId}">Link do Projeto Online</label>
+                            <input type="url" id="project-demo-${projectId}" placeholder="https://meuprojeto.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="project-image-${projectId}">Imagem do Projeto (URL)</label>
+                            <input type="text" id="project-image-${projectId}" placeholder="Cole a URL da imagem">
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeProject(${projectId})">Remover</button>
+                    </div>
+                `;
+                
+                projectsContainer.insertAdjacentHTML('beforeend', projectHTML);
+                portfolioData.projects.push({
+                    id: projectId,
+                    name: '',
+                    description: '',
+                    technologies: '',
+                    codeUrl: '',
+                    demoUrl: '',
+                    imageUrl: ''
+                });
+            }
+            
+            // Remover projeto (definida globalmente para ser acessível pelo onclick)
+            window.removeProject = function(projectId) {
+                const projectElement = document.querySelector(`.project-item[data-id="${projectId}"]`);
+                if (projectElement) {
+                    projectElement.remove();
+                }
+                
+                // Remover dos dados
+                portfolioData.projects = portfolioData.projects.filter(project => project.id !== projectId);
+                updatePreview();
+            };
+            
+            // Adicionar certificado
+            addCertificateBtn.addEventListener('click', function() {
+                const certId = Date.now();
+                const certHTML = `
+                    <div class="certificate-item" data-id="${certId}">
+                        <div class="form-group">
+                            <label for="cert-name-${certId}">Nome do Certificado/Curso</label>
+                            <input type="text" id="cert-name-${certId}" placeholder="Nome do certificado">
+                        </div>
+                        <div class="form-group">
+                            <label for="cert-org-${certId}">Instituição</label>
+                            <input type="text" id="cert-org-${certId}" placeholder="Nome da instituição">
+                        </div>
+                        <div class="form-group">
+                            <label for="cert-date-${certId}">Data de Conclusão</label>
+                            <input type="month" id="cert-date-${certId}">
+                        </div>
+                        <div class="form-group">
+                            <label for="cert-url-${certId}">URL do Certificado (opcional)</label>
+                            <input type="url" id="cert-url-${certId}" placeholder="Link para o certificado">
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeCertificate(${certId})">Remover</button>
+                    </div>
+                `;
+                
+                certificatesContainer.insertAdjacentHTML('beforeend', certHTML);
+                portfolioData.certificates.push({
+                    id: certId,
+                    name: '',
+                    organization: '',
+                    date: '',
+                    url: ''
+                });
+            });
+            
+            // Remover certificado (definida globalmente para ser acessível pelo onclick)
+            window.removeCertificate = function(certId) {
+                const certElement = document.querySelector(`.certificate-item[data-id="${certId}"]`);
+                if (certElement) {
+                    certElement.remove();
+                }
+                
+                // Remover dos dados
+                portfolioData.certificates = portfolioData.certificates.filter(cert => cert.id !== certId);
+                updatePreview();
+            };
+            
+            // Alterar tema
+            themeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    themeOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const theme = this.dataset.theme;
+                    portfolioData.customization.theme = theme;
+                    
+                    if (theme === 'dark') {
+                        document.body.classList.add('dark-theme');
+                    } else {
+                        document.body.classList.remove('dark-theme');
+                    }
+                    
+                    updatePreview();
+                });
+            });
+            
+            // Alterar cores
+            primaryColorInput.addEventListener('input', function() {
+                portfolioData.customization.primaryColor = this.value;
+                document.documentElement.style.setProperty('--primary-color', this.value);
+                updatePreview();
+            });
+            
+            secondaryColorInput.addEventListener('input', function() {
+                portfolioData.customization.secondaryColor = this.value;
+                document.documentElement.style.setProperty('--secondary-color', this.value);
+                updatePreview();
+            });
+            
+            // Alterar fonte
+            fontFamilySelect.addEventListener('change', function() {
+                portfolioData.customization.fontFamily = this.value;
+                document.body.style.fontFamily = this.value;
+                updatePreview();
+            });
+            
+            // Atualizar dados do formulário
+            portfolioForm.addEventListener('input', function(e) {
+                const id = e.target.id;
+                const value = e.target.value;
+                
+                if (id === 'name') portfolioData.personal.name = value;
+                if (id === 'title') portfolioData.personal.title = value;
+                if (id === 'profile-pic') portfolioData.personal.profilePic = value;
+                if (id === 'bio') portfolioData.personal.bio = value;
+                if (id === 'email') portfolioData.personal.email = value;
+                if (id === 'github') portfolioData.personal.github = value;
+                if (id === 'linkedin') portfolioData.personal.linkedin = value;
+                if (id === 'portfolio') portfolioData.personal.portfolio = value;
+                
+                if (id === 'skills') portfolioData.skills = value.split(',').map(skill => skill.trim());
+                
+                // Atualizar projetos
+                if (id.startsWith('project-name-')) {
+                    const projectId = id.replace('project-name-', '');
+                    const project = portfolioData.projects.find(p => p.id == projectId);
+                    if (project) project.name = value;
+                }
+                
+                if (id.startsWith('project-desc-')) {
+                    const projectId = id.replace('project-desc-', '');
+                    const project = portfolioData.projects.find(p => p.id == projectId);
+                    if (project) project.description = value;
+                }
+                
+                if (id.startsWith('project-tech-')) {
+                    const projectId = id.replace('project-tech-', '');
+                    const project = portfolioData.projects.find(p => p.id == projectId);
+                    if (project) project.technologies = value;
+                }
+                
+                if (id.startsWith('project-code-')) {
+                    const projectId = id.replace('project-code-', '');
+                    const project = portfolioData.projects.find(p => p.id == projectId);
+                    if (project) project.codeUrl = value;
+                }
+                
+                if (id.startsWith('project-demo-')) {
+                    const projectId = id.replace('project-demo-', '');
+                    const project = portfolioData.projects.find(p => p.id == projectId);
+                    if (project) project.demoUrl = value;
+                }
+                
+                if (id.startsWith('project-image-')) {
+                    const projectId = id.replace('project-image-', '');
+                    const project = portfolioData.projects.find(p => p.id == projectId);
+                    if (project) project.imageUrl = value;
+                }
+                
+                // Atualizar certificados
+                if (id.startsWith('cert-name-')) {
+                    const certId = id.replace('cert-name-', '');
+                    const certificate = portfolioData.certificates.find(c => c.id == certId);
+                    if (certificate) certificate.name = value;
+                }
+                
+                if (id.startsWith('cert-org-')) {
+                    const certId = id.replace('cert-org-', '');
+                    const certificate = portfolioData.certificates.find(c => c.id == certId);
+                    if (certificate) certificate.organization = value;
+                }
+                
+                if (id.startsWith('cert-date-')) {
+                    const certId = id.replace('cert-date-', '');
+                    const certificate = portfolioData.certificates.find(c => c.id == certId);
+                    if (certificate) certificate.date = value;
+                }
+                
+                if (id.startsWith('cert-url-')) {
+                    const certId = id.replace('cert-url-', '');
+                    const certificate = portfolioData.certificates.find(c => c.id == certId);
+                    if (certificate) certificate.url = value;
+                }
+                
+                updatePreview();
+            });
+            
+            // Atualizar preview
+            function updatePreview() {
+                const { personal, projects, skills, certificates, customization } = portfolioData;
+                
+                let skillsHTML = '';
+                if (skills.length > 0) {
+                    skillsHTML = `
+                        <h2>Habilidades</h2>
+                        <div class="skills-container">
+                            ${skills.map(skill => `<span class="skill-badge">${skill}</span>`).join('')}
+                        </div>
+                    `;
+                }
+                
+                let certificatesHTML = '';
+                if (certificates.length > 0) {
+                    certificatesHTML = `
+                        <h2>Certificados e Cursos</h2>
+                        ${certificates.map(cert => `
+                            <div class="certificate-item">
+                                <h3>${cert.name}</h3>
+                                <p><strong>Instituição:</strong> ${cert.organization}</p>
+                                <p><strong>Conclusão:</strong> ${cert.date ? new Date(cert.date).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }) : ''}</p>
+                                ${cert.url ? `<a href="${cert.url}" target="_blank">Ver certificado</a>` : ''}
+                            </div>
+                        `).join('')}
+                    `;
+                }
+                
+                let projectsHTML = '';
+                if (projects.length > 0) {
+                    projectsHTML = `
+                        <h2>Projetos</h2>
+                        ${projects.map(project => `
+                            <div class="project-card">
+                                ${project.imageUrl ? `<img src="${project.imageUrl}" alt="${project.name}" class="project-img">` : ''}
+                                <h3>${project.name}</h3>
+                                <p>${project.description}</p>
+                                <p><strong>Tecnologias:</strong> ${project.technologies}</p>
+                                <div>
+                                    ${project.codeUrl ? `<a href="${project.codeUrl}" target="_blank">Código no GitHub</a>` : ''}
+                                    ${project.demoUrl ? `<a href="${project.demoUrl}" target="_blank">Ver projeto online</a>` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    `;
+                }
+                
+                portfolioPreview.innerHTML = `
+                    <style>
+                        #portfolio-preview {
+                            font-family: ${customization.fontFamily}, sans-serif;
+                            color: ${customization.theme === 'dark' ? '#f1f1f1' : '#333'};
+                            background-color: ${customization.theme === 'dark' ? '#2d2d2d' : '#ffffff'};
+                        }
+                        #portfolio-preview a {
+                            color: ${customization.primaryColor};
+                        }
+                        .skill-badge {
+                            background-color: ${customization.primaryColor};
+                        }
+                    </style>
+                    
+                    <div class="portfolio-header">
+                        ${personal.profilePic ? `<img src="${personal.profilePic}" alt="${personal.name}" class="profile-img">` : ''}
+                        <h1>${personal.name}</h1>
+                        <p>${personal.title}</p>
+                        
+                        <div class="social-links">
+                            ${personal.email ? `<a href="mailto:${personal.email}" title="E-mail"><i class="fas fa-envelope"></i></a>` : ''}
+                            ${personal.github ? `<a href="${personal.github}" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>` : ''}
+                            ${personal.linkedin ? `<a href="${personal.linkedin}" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>` : ''}
+                            ${personal.portfolio ? `<a href="${personal.portfolio}" target="_blank" title="Portfólio"><i class="fas fa-globe"></i></a>` : ''}
+                        </div>
+                    </div>
+                    
+                    <section>
+                        <h2>Sobre</h2>
+                        <p>${personal.bio}</p>
+                    </section>
+                    
+                    ${skillsHTML}
+                    ${certificatesHTML}
+                    ${projectsHTML}
+                `;
+            }
+            
+            // Baixar portfólio
+            downloadBtn.addEventListener('click', function() {
+                const { personal, projects, skills, certificates, customization } = portfolioData;
+                
+                // Gerar HTML do portfólio
+                let skillsHTML = '';
+                if (skills.length > 0) {
+                    skillsHTML = `
+                        <section>
+                            <h2>Habilidades</h2>
+                            <div class="skills-container">
+                                ${skills.map(skill => `<span class="skill-badge">${skill}</span>`).join('')}
+                            </div>
+                        </section>
+                    `;
+                }
+                
+                let certificatesHTML = '';
+                if (certificates.length > 0) {
+                    certificatesHTML = `
+                        <section>
+                            <h2>Certificados e Cursos</h2>
+                            ${certificates.map(cert => `
+                                <div class="certificate-item">
+                                    <h3>${cert.name}</h3>
+                                    <p><strong>Instituição:</strong> ${cert.organization}</p>
+                                    <p><strong>Conclusão:</strong> ${cert.date ? new Date(cert.date).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }) : ''}</p>
+                                    ${cert.url ? `<a href="${cert.url}" target="_blank">Ver certificado</a>` : ''}
+                                </div>
+                            `).join('')}
+                        </section>
+                    `;
+                }
+                
+                let projectsHTML = '';
+                if (projects.length > 0) {
+                    projectsHTML = `
+                        <section>
+                            <h2>Projetos</h2>
+                            ${projects.map(project => `
+                                <div class="project-card">
+                                    ${project.imageUrl ? `<img src="${project.imageUrl}" alt="${project.name}" class="project-img">` : ''}
+                                    <h3>${project.name}</h3>
+                                    <p>${project.description}</p>
+                                    <p><strong>Tecnologias:</strong> ${project.technologies}</p>
+                                    <div>
+                                        ${project.codeUrl ? `<a href="${project.codeUrl}" target="_blank">Código no GitHub</a>` : ''}
+                                        ${project.demoUrl ? `<a href="${project.demoUrl}" target="_blank">Ver projeto online</a>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </section>
+                    `;
+                }
+                
+                const portfolioHTML = `
+                    <!DOCTYPE html>
+                    <html lang="pt-BR">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Portfólio - ${personal.name}</title>
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                        <link href="https://fonts.googleapis.com/css2?family=${customization.fontFamily.replace(' ', '+')}:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+                        <style>
+                            * {
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+                            
+                            body {
+                                font-family: '${customization.fontFamily}', sans-serif;
+                                color: ${customization.theme === 'dark' ? '#f1f1f1' : '#333'};
+                                background-color: ${customization.theme === 'dark' ? '#1a1a1a' : '#f8f9fa'};
+                                line-height: 1.6;
+                            }
+                            
+                            .container {
+                                max-width: 1000px;
+                                margin: 0 auto;
+                                padding: 20px;
+                                background-color: ${customization.theme === 'dark' ? '#2d2d2d' : '#ffffff'};
+                                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                            }
+                            
+                            .portfolio-header {
+                                text-align: center;
+                                margin-bottom: 40px;
+                                padding-bottom: 20px;
+                                border-bottom: 1px solid ${customization.theme === 'dark' ? '#444' : '#eaeaea'};
+                            }
+                            
+                            .profile-img {
+                                width: 150px;
+                                height: 150px;
+                                border-radius: 50%;
+                                object-fit: cover;
+                                margin: 0 auto 20px;
+                                display: block;
+                                border: 4px solid ${customization.primaryColor};
+                            }
+                            
+                            h1, h2, h3 {
+                                color: ${customization.primaryColor};
+                                margin-bottom: 15px;
+                            }
+                            
+                            p {
+                                margin-bottom: 15px;
+                            }
+                            
+                            .social-links {
+                                display: flex;
+                                justify-content: center;
+                                gap: 15px;
+                                margin: 20px 0;
+                            }
+                            
+                            .social-links a {
+                                color: ${customization.primaryColor};
+                                font-size: 1.5rem;
+                            }
+                            
+                            section {
+                                margin-bottom: 40px;
+                            }
+                            
+                            .skills-container {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 10px;
+                                margin-bottom: 20px;
+                            }
+                            
+                            .skill-badge {
+                                background-color: ${customization.primaryColor};
+                                color: white;
+                                padding: 5px 10px;
+                                border-radius: 20px;
+                                font-size: 0.9rem;
+                            }
+                            
+                            .project-card, .certificate-item {
+                                margin-bottom: 30px;
+                                padding: 20px;
+                                border: 1px solid ${customization.theme === 'dark' ? '#444' : '#eaeaea'};
+                                border-radius: 5px;
+                            }
+                            
+                            .project-img {
+                                width: 100%;
+                                border-radius: 5px;
+                                margin-bottom: 15px;
+                            }
+                            
+                            a {
+                                color: ${customization.primaryColor};
+                                text-decoration: none;
+                            }
+                            
+                            a:hover {
+                                text-decoration: underline;
+                            }
+                            
+                            @media (max-width: 768px) {
+                                .container {
+                                    padding: 15px;
+                                }
+                                
+                                .profile-img {
+                                    width: 120px;
+                                    height: 120px;
+                                }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="portfolio-header">
+                                ${personal.profilePic ? `<img src="${personal.profilePic}" alt="${personal.name}" class="profile-img">` : ''}
+                                <h1>${personal.name}</h1>
+                                <p>${personal.title}</p>
+                                
+                                <div class="social-links">
+                                    ${personal.email ? `<a href="mailto:${personal.email}" title="E-mail"><i class="fas fa-envelope"></i></a>` : ''}
+                                    ${personal.github ? `<a href="${personal.github}" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>` : ''}
+                                    ${personal.linkedin ? `<a href="${personal.linkedin}" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>` : ''}
+                                    ${personal.portfolio ? `<a href="${personal.portfolio}" target="_blank" title="Portfólio"><i class="fas fa-globe"></i></a>` : ''}
+                                </div>
+                            </div>
+                            
+                            <section>
+                                <h2>Sobre</h2>
+                                <p>${personal.bio}</p>
+                            </section>
+                            
+                            ${skillsHTML}
+                            ${certificatesHTML}
+                            ${projectsHTML}
+                        </div>
+                    </body>
+                    </html>
+                `;
+                
+                // Gerar CSS (apenas para referência, já que estamos usando estilos inline)
+                const portfolioCSS = `/* Estilos estão inline no HTML para melhor portabilidade */`;
+                
+                // Criar arquivo ZIP
+                const zip = new JSZip();
+                zip.file("index.html", portfolioHTML);
+                zip.file("style.css", portfolioCSS);
+                
+                // Gerar e baixar ZIP
+                zip.generateAsync({type:"blob"}).then(function(content) {
+                    saveAs(content, "portfolio.zip");
+                });
+            });
+            
+            // Inicializar preview
+            updatePreview();
+        });
+    </script>
+</body>
+</html>
